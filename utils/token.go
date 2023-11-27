@@ -7,6 +7,7 @@ import (
 
 	"example.com/dynamicWordpressBuilding/internal/model"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/google/uuid"
 )
 
 type JWTMaker struct {
@@ -18,7 +19,7 @@ var (
 	ErrExpiredToken = errors.New("token has expired")
 )
 
-func NewPayload(id uint, username string, duration time.Duration) (*model.Payload, error) {
+func NewPayload(id uuid.UUID, username string, duration time.Duration) (*model.Payload, error) {
 	payload := &model.Payload{
 		ID:        id,
 		Email:     username,
@@ -28,7 +29,7 @@ func NewPayload(id uint, username string, duration time.Duration) (*model.Payloa
 	return payload, nil
 }
 
-func (maker *JWTMaker) CreateToken(id uint, username string, duration time.Duration) (string, error) {
+func (maker *JWTMaker) CreateToken(id uuid.UUID, username string, duration time.Duration) (string, error) {
 	tokenPayload, err := NewPayload(id, username, duration)
 	if err != nil {
 		return "", err

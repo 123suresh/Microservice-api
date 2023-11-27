@@ -10,13 +10,14 @@ import (
 	"example.com/dynamicWordpressBuilding/utils"
 	cerr "example.com/dynamicWordpressBuilding/utils/error"
 	"example.com/dynamicWordpressBuilding/utils/security"
+	"github.com/google/uuid"
 )
 
 type IUser interface {
 	CreateUser(req *model.UserRequest) (*model.UserResponse, int, error)
 	GetAllUser() ([]model.UserResponse, int, error)
-	GetUser(uid int) (*model.UserResponse, int, error)
-	DeleteUser(uid int) (int, error)
+	GetUser(uid uuid.UUID) (*model.UserResponse, int, error)
+	DeleteUser(uid uuid.UUID) (int, error)
 	LoginUser(loginReq *model.LoginRequest) (*model.LoginToken, int, error)
 	ResetPassword(forgetPassReq *model.ResetPasswordReq) (*model.ResetPassword, int, error)
 	ForgetPassword(resetPassReq *model.ForgetPassword) (int, error)
@@ -54,7 +55,7 @@ func (s Service) GetAllUser() ([]model.UserResponse, int, error) {
 	return responses, http.StatusOK, nil
 }
 
-func (s Service) GetUser(uid int) (*model.UserResponse, int, error) {
+func (s Service) GetUser(uid uuid.UUID) (*model.UserResponse, int, error) {
 	result, err := s.repo.GetUser(uid)
 	if err != nil {
 		return nil, http.StatusNotFound, err
@@ -63,7 +64,7 @@ func (s Service) GetUser(uid int) (*model.UserResponse, int, error) {
 	return response, http.StatusOK, nil
 }
 
-func (s Service) DeleteUser(uid int) (int, error) {
+func (s Service) DeleteUser(uid uuid.UUID) (int, error) {
 	err := s.repo.DeleteUser(uid)
 	if err != nil {
 		return http.StatusNotFound, err

@@ -4,16 +4,18 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Role      string `json:"role"`
+	ID        uuid.UUID `json:"id"`
+	FirstName string    `json:"first_name"`
+	LastName  string    `json:"last_name"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	Role      string    `json:"role"`
 }
 
 type UserRequest struct {
@@ -26,6 +28,7 @@ type UserRequest struct {
 
 func NewUser(req *UserRequest) *User {
 	return &User{
+		ID:        uuid.New(),
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		Email:     req.Email,
@@ -35,7 +38,7 @@ func NewUser(req *UserRequest) *User {
 }
 
 type UserResponse struct {
-	ID        uint      `json:"id"`
+	ID        uuid.UUID `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
 	FirstName string    `json:"first_name"`
 	LastName  string    `json:"last_name"`
@@ -67,7 +70,7 @@ type LoginToken struct {
 }
 
 type Payload struct {
-	ID        uint      `json:"id"`
+	ID        uuid.UUID `json:"id"`
 	Email     string    `json:"email"`
 	IssuedAt  time.Time `json:"issued_at"`
 	ExpiredAt time.Time `json:"expired_at"`

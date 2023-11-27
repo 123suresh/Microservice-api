@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"example.com/dynamicWordpressBuilding/internal/model"
+	"github.com/google/uuid"
 )
 
 type UserInterface interface {
 	CreateUser(req *model.User) (*model.User, error)
 	GetAllUser() ([]model.User, error)
-	GetUser(uid int) (*model.User, error)
-	DeleteUser(uid int) error
+	GetUser(uid uuid.UUID) (*model.User, error)
+	DeleteUser(uid uuid.UUID) error
 	LoginUser(email string) (*model.User, error)
 	EmailExistCheck(email string) bool
 	ResetPassword(resetPass *model.ResetPassword) (*model.ResetPassword, error)
@@ -35,7 +36,7 @@ func (r *Repo) GetAllUser() ([]model.User, error) {
 	return users, nil
 }
 
-func (r *Repo) GetUser(uid int) (*model.User, error) {
+func (r *Repo) GetUser(uid uuid.UUID) (*model.User, error) {
 	data := &model.User{}
 	err := r.db.Model(&model.User{}).Where("id=?", uid).Take(&data).Error
 	if err != nil {
@@ -44,7 +45,7 @@ func (r *Repo) GetUser(uid int) (*model.User, error) {
 	return data, nil
 }
 
-func (r *Repo) DeleteUser(uid int) error {
+func (r *Repo) DeleteUser(uid uuid.UUID) error {
 	data := &model.User{}
 	err := r.db.Model(&model.User{}).Where("id=?", uid).Delete(&data).Error
 	if err != nil {
