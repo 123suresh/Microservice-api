@@ -13,6 +13,7 @@ import (
 	"example.com/dynamicWordpressBuilding/utils"
 	"example.com/dynamicWordpressBuilding/utils/response"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 )
 
@@ -100,9 +101,10 @@ func (ctl *Controller) SetRoutes(path string, envValue string) {
 		}
 		// Set user-related headers if a user ID is present
 		logrus.Info("payload ", payload)
-		if payload.ID != 0 {
-			user, _, _ := ctl.svc.GetUser(int(payload.ID))
+		if payload.ID != uuid.Nil {
+			user, _, _ := ctl.svc.GetUser(payload.ID)
 			proxyReq.Header.Set("x-user-id", fmt.Sprint(user.ID))
+			proxyReq.Header.Set("x-user-email", fmt.Sprint(user.Email))
 			// if userGotten != nil && userGotten.IsAdmin {
 			// 	proxyReq.Header.Set("x-user-role", "ADMIN")
 			// }

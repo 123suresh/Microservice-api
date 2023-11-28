@@ -2,11 +2,11 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"example.com/dynamicWordpressBuilding/internal/model"
 	"example.com/dynamicWordpressBuilding/utils/response"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 )
 
@@ -39,7 +39,8 @@ func (controller *Controller) GetAllUser(c *gin.Context) {
 
 func (controller *Controller) GetUser(c *gin.Context) {
 	id := c.Param("id")
-	uid, err := strconv.Atoi(id)
+	// uid, err := strconv.Atoi(id)
+	uid, err := uuid.Parse(id)
 	if err != nil {
 		logrus.Error("Error while converting id from string to number")
 		return
@@ -55,7 +56,8 @@ func (controller *Controller) GetUser(c *gin.Context) {
 
 func (ctl *Controller) DeleteUser(c *gin.Context) {
 	id := c.Param("id")
-	uid, err := strconv.Atoi(id)
+	// uid, err := strconv.Atoi(id)
+	uid, err := uuid.Parse(id)
 	if err != nil {
 		logrus.Error("Error while converting id from string to number")
 		return
