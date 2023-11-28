@@ -104,6 +104,7 @@ func (ctl *Controller) SetRoutes(path string, envValue string) {
 		if payload.ID != uuid.Nil {
 			user, _, _ := ctl.svc.GetUser(payload.ID)
 			proxyReq.Header.Set("x-user-id", fmt.Sprint(user.ID))
+			proxyReq.Header.Set("x-user-email", fmt.Sprint(user.Email))
 			// if userGotten != nil && userGotten.IsAdmin {
 			// 	proxyReq.Header.Set("x-user-role", "ADMIN")
 			// }
